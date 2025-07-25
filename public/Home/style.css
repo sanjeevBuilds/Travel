@@ -332,14 +332,17 @@ body.night {
     top: 50%;
     left: 50%;
     display: block;
-    width: calc(var(--width) * 1px);
+    width: calc(var(--width) * 1.2px);
     aspect-ratio: 1;
-    background-color: var(--light);
+    background-color: #fffbe6;
     border-radius: 50%;
+    box-shadow: 0 0 8px 2px #fffbe6, 0 0 16px 4px #ffd70099;
+    opacity: 0.85;
     transform-origin: 50% 50%;
     rotate: calc(1deg * var(--deg));
     transform: translate(-50%, -50%);
     animation: sparkle calc(100s / var(--duration)) linear calc(0s / var(--duration)) infinite;
+    z-index: 1;
 }
 @keyframes sparkle {
     to {
@@ -381,13 +384,19 @@ body.night .toggle-cont .toggle-label .cont-icon {
     transform: translateX(calc((var(--gap) * 2) + 100%)) rotate(-225deg);
 }
 body.night .toggle-cont .toggle-label .cont-icon .sparkle {
-    z-index: -10;
-    width: calc(var(--width) * 1.5px);
-    background-color: #acacac;
-    animation: sparkle calc(100s / var(--duration)) linear calc(10s / var(--duration)) infinite;
+    background-color: #eaf6ff;
+    box-shadow: 0 0 12px 4px #b3c6e0, 0 0 24px 8px #1e90ff99;
+    opacity: 0.95;
 }
 body.night .cont-icon .icon {
     fill: #b3c6e0;
+}
+body.night .snow-input {
+    color: #eaf6ff;
+}
+body.night .snow-input::placeholder {
+    color: #b3c6e0;
+    opacity: 1;
 }
 @media (max-width: 600px) {
     .toggle-cont {
