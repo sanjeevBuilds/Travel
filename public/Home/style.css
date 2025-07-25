@@ -1,0 +1,401 @@
+body {
+    --primary: #54a8fc;
+    --light: #d9d9d9;
+    --dark: #121212;
+    --gray: #414344;
+    --frost-bg: rgba(255,255,255,0.25);
+    --mountain-filter: blur(2px) brightness(0.8) saturate(1.1);
+    --scene-bg: linear-gradient(to top, #2e3c50 0%, #a9c9ff 100%);
+    --input-bg: rgba(255,255,255,0.7);
+    --input-focus-bg: rgba(255,255,255,0.95);
+    --input-shadow: 0 2px 12px 0 rgba(0,0,0,0.08);
+    --btn-bg: rgba(255,255,255,0.18);
+    --btn-hover-bg: rgba(255,255,255,0.35);
+    --btn-shadow: 0 0 8px 2px #a9c9ff, 0 2px 8px 0 rgba(0,0,0,0.08);
+    --btn-hover-shadow: 0 0 16px 4px #a9c9ff, 0 4px 16px 0 rgba(0,0,0,0.12);
+    --frosted-card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37), 0 0 32px 8px #a9c9ff33;
+    --snow-shadow: drop-shadow(0 2px 8px #fff8) drop-shadow(0 8px 24px #a9c9ff44);
+    --search-btn-bg: rgba(255,255,255,0.18);
+    --search-btn-hover-bg: rgba(255,255,255,0.35);
+    --search-btn-shadow: 0 0 12px 2px #a9c9ff, 0 2px 8px 0 rgba(0,0,0,0.08);
+    --search-btn-hover-shadow: 0 0 16px 4px #a9c9ff, 0 4px 16px 0 rgba(0,0,0,0.12);
+    background: var(--scene-bg);
+}
+
+body.night {
+    --primary: #1e90ff;
+    --light: #b3c6e0;
+    --dark: #0a0a1a;
+    --gray: #23243a;
+    --frost-bg: rgba(30,34,60,0.55);
+    --mountain-filter: blur(2.5px) brightness(0.5) saturate(1.2);
+    --scene-bg: linear-gradient(to top, #0a0a1a 0%, #23243a 100%);
+    --input-bg: rgba(30,34,60,0.7);
+    --input-focus-bg: rgba(30,34,60,0.95);
+    --input-shadow: 0 2px 12px 0 rgba(0,0,0,0.18);
+    --btn-bg: rgba(30,34,60,0.18);
+    --btn-hover-bg: rgba(30,34,60,0.35);
+    --btn-shadow: 0 0 8px 2px #1e90ff, 0 2px 8px 0 rgba(0,0,0,0.18);
+    --btn-hover-shadow: 0 0 16px 4px #1e90ff, 0 4px 16px 0 rgba(0,0,0,0.22);
+    --frosted-card-shadow: 0 8px 32px 0 rgba(30, 34, 60, 0.47), 0 0 32px 8px #1e90ff33;
+    --snow-shadow: drop-shadow(0 2px 8px #b3c6e088) drop-shadow(0 8px 24px #1e90ff44);
+    --search-btn-bg: rgba(30,34,60,0.18);
+    --search-btn-hover-bg: rgba(30,34,60,0.35);
+    --search-btn-shadow: 0 0 12px 2px #1e90ff, 0 2px 8px 0 rgba(0,0,0,0.18);
+    --search-btn-hover-shadow: 0 0 16px 4px #1e90ff, 0 4px 16px 0 rgba(0,0,0,0.22);
+    background: var(--scene-bg);
+}
+
+.scene {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.mountain-bg {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+    filter: var(--mountain-filter);
+    z-index: 1;
+}
+
+#snow-canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.frosted-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--frost-bg);
+    box-shadow: var(--frosted-card-shadow);
+    backdrop-filter: blur(12px) saturate(1.5);
+    border-radius: 24px;
+    padding: 48px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    min-width: 420px;
+    max-width: 95vw;
+    width: 340px;
+    z-index: 3;
+    border: 1.5px solid rgba(255,255,255,0.25);
+    box-sizing: border-box;
+}
+
+.input-group {
+    position: relative;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.snow-input {
+    width: 90%;
+    padding: 18px 20px;
+    border-radius: 12px;
+    border: none;
+    background: var(--input-bg);
+    font-size: 1.2rem;
+    color: #222;
+    box-shadow: var(--input-shadow);
+    outline: none;
+    transition: background 0.3s, box-shadow 0.3s;
+    position: relative;
+    z-index: 2;
+    margin: 0 auto;
+    display: block;
+}
+.snow-input::placeholder {
+    color: #888;
+    opacity: 1;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+.snow-input:focus {
+    background: var(--input-focus-bg);
+    box-shadow: 0 4px 24px 0 rgba(0,0,0,0.12), 0 0 8px 2px #a9c9ff;
+}
+
+.snow-accumulation {
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.navbar {
+    position: fixed;
+    top: 32px;
+    right: 48px;
+    z-index: 10;
+    background: rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 8px 24px;
+    box-shadow: 0 2px 16px 0 rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    backdrop-filter: blur(6px);
+}
+
+.nav-btn {
+    background: var(--btn-bg);
+    border: none;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 10px 24px;
+    border-radius: 8px;
+    margin-left: 8px;
+    box-shadow: var(--btn-shadow);
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+    text-shadow: 0 0 8px #a9c9ff;
+}
+.nav-btn:hover {
+    background: var(--btn-hover-bg);
+    color: #222;
+    box-shadow: var(--btn-hover-shadow);
+}
+
+/* Cinematic depth and glow */
+.frosted-card, .navbar {
+    box-shadow: var(--frosted-card-shadow);
+}
+
+/* Subtle snow shadow */
+.snow-accumulation {
+    filter: var(--snow-shadow);
+}
+
+.search-btn-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 12px;
+    position: relative;
+}
+
+.search-btn {
+    background: var(--search-btn-bg);
+    border: none;
+    color: #fff;
+    font-size: 1.15rem;
+    font-weight: 500;
+    padding: 14px 48px;
+    border-radius: 12px;
+    margin-top: 0;
+    box-shadow: var(--search-btn-shadow);
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+    text-shadow: 0 0 8px #a9c9ff;
+    position: relative;
+    z-index: 2;
+}
+.search-btn:hover {
+    background: var(--search-btn-hover-bg);
+    color: #222;
+    box-shadow: var(--search-btn-hover-shadow);
+}
+
+.input-snow-canvas {
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 3;
+    border-radius: 12px;
+}
+
+.frosted-card {
+    /* add space for button */
+    gap: 32px;
+    padding-bottom: 36px;
+}
+
+.nav-buttons-standalone {
+    position: fixed;
+    top: 32px;
+    right: 48px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+.toggle-cont {
+    --primary: var(--primary);
+    --light: var(--light);
+    --dark: var(--dark);
+    --gray: var(--gray);
+    position: fixed;
+    top: 32px;
+    left: 48px;
+    z-index: 10;
+    width: fit-content;
+    height: 50px;
+    border-radius: 9999px;
+}
+
+.toggle-cont .toggle-input {
+    display: none;
+}
+
+.toggle-cont .toggle-label {
+    --gap: 5px;
+    --width: 50px;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    padding: 0.5rem;
+    width: calc((var(--width) + var(--gap)) * 2);
+    height: 100%;
+    background-color: var(--gray);
+    border: 2px solid var(--primary);
+    border-bottom: 0;
+    border-radius: 9999px;
+    box-sizing: content-box;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 0 8px 2px var(--primary), 0 2px 8px 0 rgba(0,0,0,0.08);
+}
+.toggle-label::before {
+    content: "";
+    position: absolute;
+    z-index: -10;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% + 1.5rem);
+    height: calc(100% + 1.5rem);
+    background-color: var(--gray);
+    border: 1px solid #777777;
+    border-bottom: 0;
+    border-radius: 9999px;
+    transition: all 0.3s ease-in-out;
+}
+.toggle-label::after {
+    content: "";
+    position: absolute;
+    z-index: -10;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(
+        circle at 50% -100%,
+        var(--primary) 0%,
+        var(--dark) 80%
+    );
+    border-radius: 9999px;
+}
+.toggle-cont .toggle-label .cont-icon {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--width);
+    height: 50px;
+    background-image: radial-gradient(
+        circle at 50% 0%,
+        #666666 0%,
+        var(--gray) 100%
+    );
+    border: 1px solid #aaaaaa;
+    border-bottom: 0;
+    border-radius: 9999px;
+    box-shadow: inset 0 -0.15rem 0.15rem var(--primary),
+        inset 0 0 0.5rem 0.75rem var(--second);
+    transition: transform 0.3s ease-in-out;
+}
+.cont-icon {
+    overflow: clip;
+    position: relative;
+}
+.cont-icon .sparkle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: calc(var(--width) * 1px);
+    aspect-ratio: 1;
+    background-color: var(--light);
+    border-radius: 50%;
+    transform-origin: 50% 50%;
+    rotate: calc(1deg * var(--deg));
+    transform: translate(-50%, -50%);
+    animation: sparkle calc(100s / var(--duration)) linear calc(0s / var(--duration)) infinite;
+}
+@keyframes sparkle {
+    to {
+        width: calc(var(--width) * 0.5px);
+        transform: translate(2000%, -50%);
+    }
+}
+.cont-icon .icon {
+    width: 1.7rem;
+    height: 1.7rem;
+    fill: var(--primary);
+    filter: drop-shadow(0 0 4px var(--light));
+    transition: fill 0.3s, filter 0.3s;
+}
+body.night .cont-icon .icon {
+    fill: #b3c6e0;
+    filter: drop-shadow(0 0 6px #1e90ff);
+}
+.toggle-cont:has(.toggle-input:checked) {
+    --checked: true;
+}
+body.night .toggle-cont .toggle-label {
+    background-color: #23243a;
+    border: 2px solid #1e90ff;
+    box-shadow: 0 2px 16px 0 #1e90ff44;
+}
+body.night .toggle-cont .toggle-label::before {
+    box-shadow: 0 1rem 2.5rem -2rem #0080ff;
+}
+body.night .toggle-cont .toggle-label .cont-icon {
+    overflow: visible;
+    background-image: radial-gradient(
+        circle at 50% 0%,
+        #045ab1 0%,
+        var(--primary) 100%
+    );
+    border: 1px solid var(--primary);
+    border-bottom: 0;
+    transform: translateX(calc((var(--gap) * 2) + 100%)) rotate(-225deg);
+}
+body.night .toggle-cont .toggle-label .cont-icon .sparkle {
+    z-index: -10;
+    width: calc(var(--width) * 1.5px);
+    background-color: #acacac;
+    animation: sparkle calc(100s / var(--duration)) linear calc(10s / var(--duration)) infinite;
+}
+body.night .cont-icon .icon {
+    fill: #b3c6e0;
+}
+@media (max-width: 600px) {
+    .toggle-cont {
+        left: 16px;
+        top: 16px;
+    }
+    .nav-buttons-standalone {
+        right: 16px;
+        top: 16px;
+    }
+} 

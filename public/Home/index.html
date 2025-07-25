@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransiGo - Winter Travel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="toggle-cont" id="theme-toggle-cont">
+        <input type="checkbox" class="toggle-input" id="theme-toggle" />
+        <label class="toggle-label" for="theme-toggle">
+            <span class="cont-icon">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>
+                <span class="sparkle" style="--deg:0;--duration:8;"></span>
+                <span class="sparkle" style="--deg:120;--duration:10;"></span>
+                <span class="sparkle" style="--deg:240;--duration:12;"></span>
+            </span>
+        </label>
+    </div>
+    <div class="nav-buttons nav-buttons-standalone">
+        <button class="nav-btn">Sign In</button>
+        <button class="nav-btn">Sign Up</button>
+    </div>
+    <div class="scene">
+        <div class="mountain-bg"></div>
+        <canvas id="snow-canvas"></canvas>
+        <div class="frosted-card">
+            <div class="input-group">
+                <input type="text" id="source" class="snow-input" placeholder="Source" autocomplete="off">
+                <canvas class="input-snow-canvas" id="input-snow-source"></canvas>
+            </div>
+            <div class="input-group">
+                <input type="text" id="destination" class="snow-input" placeholder="Destination" autocomplete="off">
+                <canvas class="input-snow-canvas" id="input-snow-destination"></canvas>
+            </div>
+            <div class="search-btn-container">
+                <button id="search-btn" class="search-btn">Search</button>
+                <canvas class="input-snow-canvas" id="input-snow-search"></canvas>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
