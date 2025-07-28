@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransiGo - Sign In</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="toggle-cont" id="theme-toggle-cont">
+        <input type="checkbox" class="toggle-input" id="theme-toggle" />
+        <label class="toggle-label" for="theme-toggle">
+            <span class="cont-icon">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>
+                <span class="sparkle" style="--deg:0;--duration:8;"></span>
+                <span class="sparkle" style="--deg:120;--duration:10;"></span>
+                <span class="sparkle" style="--deg:240;--duration:12;"></span>
+            </span>
+        </label>
+    </div>
+    <div class="nav-buttons nav-buttons-standalone">
+        <button class="nav-btn" onclick="window.location.href='../SignUp/signup.html'">Sign Up</button>
+        <button class="nav-btn" onclick="window.location.href='../Home/index.html'">Home</button>
+    </div>
+    <div class="scene">
+        <div class="lake-bg"></div>
+        <canvas id="snow-canvas"></canvas>
+        <div class="frosted-card">
+            <h2 class="card-title">Welcome Back</h2>
+            <div class="input-group">
+                <input type="email" id="email" class="snow-input" placeholder="Email Address" autocomplete="off">
+                <canvas class="input-snow-canvas" id="input-snow-email"></canvas>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" class="snow-input" placeholder="Password" autocomplete="off">
+                <canvas class="input-snow-canvas" id="input-snow-password"></canvas>
+            </div>
+            <div class="forgot-password">
+                <a href="#" id="forgot-link">Forgot Password?</a>
+            </div>
+            <div class="login-btn-container">
+                <button id="login-btn" class="login-btn">Sign In</button>
+                <canvas class="input-snow-canvas" id="input-snow-login"></canvas>
+            </div>
+            <div class="signup-link">
+                Don't have an account? <a href="../SignUp/signup.html">Sign Up</a>
+            </div>
+        </div>
+    </div>
+    <script src="login.js"></script>
+</body>
+</html>
