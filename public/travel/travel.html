@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+git <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,26 +22,20 @@
         <button class="nav-btn" onclick="window.location.href='../Home/index.html'">Home</button>
         <button class="nav-btn" onclick="window.location.href='../LogIn/login.html'">Sign In</button>
     </div>
-    
+
     <div class="scene">
         <div class="cityscape-bg"></div>
         <canvas id="snow-canvas"></canvas>
-        
-        <!-- Flight Animation Container -->
-        <div class="flight-container">
-            <div class="airplane" id="airplane">
-                <div class="plane-body">
-                    <div class="plane-window"></div>
-                    <div class="plane-window"></div>
-                    <div class="plane-window"></div>
-                </div>
-                <div class="plane-wing plane-wing-left"></div>
-                <div class="plane-wing plane-wing-right"></div>
-                <div class="plane-tail"></div>
-                <div class="plane-engine plane-engine-left"></div>
-                <div class="plane-engine plane-engine-right"></div>
-            </div>
-            <div class="flight-trail"></div>
+
+        <div class="orbit-orbs-container">
+            <div class="orbit-orb" id="orbit-orb-0"></div>
+            <div class="orbit-orb" id="orbit-orb-1"></div>
+            <div class="orbit-orb" id="orbit-orb-2"></div>
+            <div class="orbit-orb" id="orbit-orb-3"></div>
+            <div class="orbit-orb" id="orbit-orb-4"></div>
+            <div class="orbit-orb" id="orbit-orb-5"></div>
+            <div class="orbit-orb" id="orbit-orb-6"></div>
+            <div class="orbit-orb" id="orbit-orb-7"></div>
         </div>
 
         <!-- Train Animation Container -->
@@ -82,6 +76,18 @@
         </div>
 
         <div class="frosted-card">
+            <div class="mini-scene">
+                <div class="mini-road"></div>
+                <div class="mini-portal" id="mini-portal"></div>
+                <div class="mini-car" id="mini-car">
+                    <div class="mini-car-body"></div>
+                    <div class="mini-car-window"></div>
+                    <div class="mini-car-wheel mini-car-wheel-front"></div>
+                    <div class="mini-car-wheel mini-car-wheel-back"></div>
+                    <div class="mini-car-light mini-car-light-front"></div>
+                    <div class="mini-car-light mini-car-light-back"></div>
+                </div>
+            </div>
             <h2 class="card-title">Choose Your Journey</h2>
             <div class="transport-options">
                 <div class="transport-option" data-transport="flight">
@@ -97,7 +103,7 @@
                         <span class="cost">💰 $200-800</span>
                     </div>
                 </div>
-                
+
                 <div class="transport-option" data-transport="train">
                     <div class="transport-icon">
                         <svg viewBox="0 0 24 24" class="icon-svg">
@@ -111,7 +117,7 @@
                         <span class="cost">💰 $5-15</span>
                     </div>
                 </div>
-                
+
                 <div class="transport-option" data-transport="car">
                     <div class="transport-icon">
                         <svg viewBox="0 0 24 24" class="icon-svg">
@@ -126,7 +132,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="journey-details">
                 <div class="route-info">
                     <div class="route-point">
@@ -143,14 +149,14 @@
                     <span id="selected-transport-text">Select your preferred mode of travel</span>
                 </div>
             </div>
-            
+
             <div class="action-buttons">
                 <button class="action-btn secondary-btn" onclick="window.location.href='../Home/index.html'">Back to Search</button>
                 <button class="action-btn primary-btn" id="book-btn" disabled>Book Journey</button>
             </div>
         </div>
     </div>
-    
+
     <script src="travel.js"></script>
 </body>
 </html>
