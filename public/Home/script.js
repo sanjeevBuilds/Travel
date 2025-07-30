@@ -185,3 +185,26 @@ themeToggle.addEventListener('change', () => {
         localStorage.setItem('theme', 'day');
     }
 });
+
+// Search functionality
+const searchBtn = document.getElementById('search-btn');
+const sourceInput = document.getElementById('source');
+const destinationInput = document.getElementById('destination');
+
+searchBtn.addEventListener('click', () => {
+    const source = sourceInput.value.trim();
+    const destination = destinationInput.value.trim();
+
+    // Check if both fields are filled
+    if (!source || !destination) {
+        alert('Please enter both source and destination');
+        return;
+    }
+
+    // Store the route information in localStorage for the travel page
+    localStorage.setItem('source', source);
+    localStorage.setItem('destination', destination);
+
+    // Redirect to travel page
+    window.location.href = '../travel/travel.html';
+});

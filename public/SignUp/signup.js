@@ -226,6 +226,6 @@ signupBtn.addEventListener('click', () => {
 
     // If validation passes, you can redirect or show success message
     alert('Account created successfully!');
-    // Redirect to login page
-    window.location.href = '../LogIn/login.html';
+    // Redirect to home page
+    window.location.href = '../Home/index.html';
 });
