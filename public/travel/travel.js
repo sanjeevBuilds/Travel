@@ -130,24 +130,17 @@ transportOptions.forEach(option => {
 function highlightTransport(transportType) {
     // Reset all animations
     const airplane = document.getElementById('airplane');
-    const train = document.getElementById('train');
-    const car = document.getElementById('car');
-    
+    const train = document.getElementById('train-1');
     // Remove all highlight classes
-    airplane.classList.remove('highlighted');
-    train.classList.remove('highlighted');
-    car.classList.remove('highlighted');
-    
+    if (airplane) airplane.classList.remove('highlighted');
+    if (train) train.classList.remove('highlighted');
     // Add highlight to selected transport
     switch(transportType) {
         case 'flight':
-            airplane.classList.add('highlighted');
+            if (airplane) airplane.classList.add('highlighted');
             break;
         case 'train':
-            train.classList.add('highlighted');
-            break;
-        case 'car':
-            car.classList.add('highlighted');
+            if (train) train.classList.add('highlighted');
             break;
     }
 }
@@ -376,81 +369,3 @@ frostedCard.addEventListener('mouseenter', bounceMiniCar);
 inputEls.forEach(input => {
     input.addEventListener('focus', bounceMiniCar);
 });
-
-// Orbiting Orbs Animation
-const orbCount = 8;
-const orbs = Array.from({length: orbCount}, (_, i) => document.getElementById(`orbit-orb-${i}`));
-const orbSpeed = 2.5;
-const orbBaseScale = 0.55;
-
-let cursorCenter = null;
-let trailingCenter = null;
-function lerp(a, b, t) { return a + (b - a) * t; }
-
-window.addEventListener('mousemove', e => {
-    cursorCenter = { x: e.clientX, y: e.clientY };
-});
-window.addEventListener('mouseleave', () => {
-    cursorCenter = null;
-});
-window.addEventListener('touchmove', e => {
-    if (e.touches && e.touches.length > 0) {
-        cursorCenter = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-    }
-});
-window.addEventListener('touchend', () => {
-    cursorCenter = null;
-});
-
-let orbsRed = false;
-function triggerRedOrbs() {
-    orbsRed = true;
-    setTimeout(() => { orbsRed = false; }, 1000);
-}
-// Listen for any button click
-window.addEventListener('click', e => {
-    if (e.target.tagName === 'BUTTON') triggerRedOrbs();
-});
-
-function animateOrbs3D() {
-    const card = document.querySelector('.frosted-card');
-    if (!card) return;
-    const rect = card.getBoundingClientRect();
-    let targetX, targetY;
-    if (cursorCenter) {
-        targetX = cursorCenter.x;
-        targetY = cursorCenter.y;
-    } else {
-        targetX = rect.left + rect.width / 2;
-        targetY = rect.top + rect.height / 2;
-    }
-    // Lerp the trailing center toward the target
-    if (!trailingCenter) trailingCenter = { x: targetX, y: targetY };
-    trailingCenter.x = lerp(trailingCenter.x, targetX, 0.045);
-    trailingCenter.y = lerp(trailingCenter.y, targetY, 0.045);
-
-    const rx = Math.max(rect.width, rect.height) / 2 + 4; // even closer
-    const now = performance.now() / 1000;
-    const fade = cursorCenter ? 1 : 0.5;
-    orbs.forEach((orb, i) => {
-        const t = now * orbSpeed + (i * (2 * Math.PI / orbCount));
-        const heartScaleX = 0.36 * rx; // even closer
-        const heartScaleY = 0.22 * rx; // even closer
-        const x = trailingCenter.x + heartScaleX * 16 * Math.pow(Math.sin(t), 3) / 18 - 8;
-        const y = trailingCenter.y - heartScaleY * (13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)) / 18 - 8;
-        const z = Math.sin(t);
-        const scale = orbBaseScale + 0.3 * (z + 1) / 2;
-        const blur = 8 - 8 * ((z + 1) / 2);
-        const opacity = (0.18 + 0.55 * ((z + 1) / 2)) * fade;
-        orb.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
-        orb.style.filter = `blur(${Math.max(0, blur)}px) brightness(1.25)`;
-        orb.style.opacity = opacity;
-        orb.style.zIndex = z > 0 ? 20 : 2;
-        orb.style.background = orbsRed
-            ? 'radial-gradient(circle, #fff 60%, #d90429 100%)'
-            : 'radial-gradient(circle, #fff 70%, #eaf6ff 100%)';
-    });
-    requestAnimationFrame(animateOrbs3D);
-}
-// Start the new 3D animation
-requestAnimationFrame(animateOrbs3D);

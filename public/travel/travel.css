@@ -256,14 +256,14 @@ body.night {
     box-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
-.train {
-    position: absolute;
-    bottom: 8px;
-    left: -200px;
-    display: flex;
-    animation: train-move 12s linear infinite;
-    filter: drop-shadow(0 0 10px #54a8fc);
-}
+        .train {
+            position: absolute;
+            bottom: 8px;
+            left: -200px;
+            display: flex;
+            animation: train-move 4s linear infinite;
+            filter: drop-shadow(0 0 10px #54a8fc);
+        }
 
 .train-carriage {
     width: 40px;
@@ -321,8 +321,8 @@ body.night {
     bottom: 6px;
     left: -100px;
     width: 60px;
-    height: 20px;
-    animation: car-drive 10s ease-in-out infinite;
+    height: 28px;
+    animation: car-drive 10s linear infinite;
     filter: drop-shadow(0 0 10px #54a8fc);
 }
 
@@ -330,11 +330,25 @@ body.night {
     position: absolute;
     width: 50px;
     height: 12px;
-    background: linear-gradient(90deg, #ff6b6b, #ff8e8e);
+    background: linear-gradient(90deg, #fff, #e0e0e0);
     border-radius: 6px;
-    top: 4px;
+    bottom: 0;
     left: 5px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    border: 1px solid #ccc;
+}
+
+.car-windshield {
+    position: absolute;
+    width: 32px;
+    height: 12px;
+    background: linear-gradient(135deg, #87ceeb 0%, #5f9ea0 100%);
+    border-radius: 6px 6px 0 0;
+    bottom: 12px;
+    left: 14px;
+    box-shadow: 0 0 4px #87ceeb, inset 0 0 2px rgba(255,255,255,0.5);
+    border: 1px solid #5f9ea0;
+    clip-path: polygon(0% 100%, 15% 0%, 85% 0%, 100% 100%);
 }
 
 .car-window {
@@ -356,7 +370,7 @@ body.night {
     height: 8px;
     background: #333;
     border-radius: 50%;
-    bottom: 0;
+    bottom: -2px;
     border: 2px solid #666;
     animation: wheel-spin 1s linear infinite;
 }
@@ -391,12 +405,8 @@ body.night {
 }
 
 @keyframes car-drive {
-    0% { left: -100px; transform: translateY(0); }
-    20% { left: 20%; transform: translateY(-2px); }
-    40% { left: 40%; transform: translateY(0); }
-    60% { left: 60%; transform: translateY(-2px); }
-    80% { left: 80%; transform: translateY(0); }
-    100% { left: 100%; transform: translateY(-2px); }
+    0% { left: -100px; }
+    100% { left: 100%; }
 }
 
 @keyframes wheel-spin {
@@ -1221,324 +1231,17 @@ body.night .toggle-cont .toggle-label .cont-icon .sparkle {
     100% { filter: brightness(1.4) blur(2px); opacity: 1; }
 }
 
-@media (max-width: 768px) {
-    .transport-options {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-    
-    .frosted-card {
-        width: 90vw;
-        padding: 32px 24px;
-        gap: 24px;
-    }
-    
-    .card-title {
-        font-size: 1.8rem;
-    }
-    
-    .toggle-cont {
-        left: 16px;
-        top: 16px;
-    }
-    
-    .nav-buttons-standalone {
-        right: 16px;
-        top: 16px;
-    }
+.train-bg {
+    animation-duration: 10s !important;
+}
+.car-bg {
+    animation-duration: 8s !important;
 }
 
-@media (max-width: 600px) {
-  .scene {
-    width: 100vw;
-    height: 100vh;
-    min-height: 100dvh;
-    overflow: visible;
-  }
-  .frosted-card {
-    min-width: unset;
-    width: 97vw;
-    max-width: 100vw;
-    padding: 10px 2vw;
-    border-radius: 12px;
-    gap: 10px;
-    top: 56%;
-    left: 50%;
-    transform: translate(-50%, -56%);
-    z-index: 10;
-  }
-  .card-title {
-    font-size: 1rem;
-    padding: 0 1vw;
-  }
-  .mini-scene {
-    height: 32px;
-    margin-bottom: 6px;
-  }
-  .mini-road {
-    left: 2%;
-    width: 96%;
-    height: 5px;
-  }
-  .mini-car {
-    width: 22px;
-    height: 10px;
-    left: 10%;
-    bottom: 6px;
-  }
-  .mini-car-body {
-    width: 14px;
-    height: 5px;
-    left: 3px;
-    top: 2px;
-  }
-  .mini-car-window {
-    width: 5px;
-    height: 3px;
-    left: 6px;
-    top: 2px;
-  }
-  .mini-car-wheel {
-    width: 3px;
-    height: 3px;
-    bottom: -1px;
-  }
-  .mini-car-wheel-front {
-    left: 2px;
-  }
-  .mini-car-wheel-back {
-    right: 2px;
-  }
-  .mini-car-light {
-    width: 1px;
-    height: 1px;
-    top: 3px;
-  }
-  .mini-car-light-front {
-    right: 1px;
-  }
-  .mini-car-light-back {
-    left: 1px;
-  }
-  .mini-portal {
-    width: 10px;
-    height: 10px;
-    left: 48%;
-    bottom: 2px;
-  }
-  .transport-options {
-    grid-template-columns: 1fr;
-    gap: 6px;
-    margin-bottom: 6px;
-  }
-  .transport-option {
-    padding: 8px 2px;
-    border-radius: 7px;
-  }
-  .transport-icon {
-    width: 20px;
-    height: 20px;
-    margin-bottom: 4px;
-  }
-  .icon-svg {
-    width: 14px;
-    height: 14px;
-  }
-  .transport-option h3 {
-    font-size: 0.85rem;
-  }
-  .transport-option p {
-    font-size: 0.7rem;
-  }
-  .transport-details {
-    font-size: 0.6rem;
-  }
-  .journey-details {
-    padding: 6px;
-    border-radius: 7px;
-  }
-  .route-info {
-    gap: 4px;
-    margin-bottom: 4px;
-  }
-  .route-point {
-    font-size: 0.7rem;
-    gap: 2px;
-  }
-  .point-icon {
-    font-size: 0.8rem;
-  }
-  .route-arrow {
-    font-size: 0.9rem;
-  }
-  .selected-transport {
-    font-size: 0.7rem;
-  }
-  .action-buttons {
-    gap: 4px;
-    flex-direction: column;
-  }
-  .action-btn {
-    padding: 7px 0;
-    font-size: 0.85rem;
-    border-radius: 6px;
-    width: 100%;
-  }
-  .nav-buttons-standalone {
-    right: 2px;
-    top: 2px;
-    gap: 2px;
-    z-index: 20;
-  }
-  .nav-btn {
-    font-size: 0.8rem;
-    padding: 5px 7px;
-    border-radius: 4px;
-    margin-left: 0;
-    min-width: 60px;
-  }
-  .toggle-cont {
-    left: 6px;
-    top: 6px;
-    height: 20px;
-    z-index: 20;
-    position: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    background: none;
-    box-shadow: none;
-  }
-  .toggle-label {
-    --width: 12px;
-    padding: 0.01rem 0.2rem;
-    height: 16px;
-    min-width: 24px;
-    border-radius: 9999px;
-    background: var(--gray);
-    border: 1px solid var(--primary);
-    box-shadow: 0 0 2px 0.5px var(--primary), 0 1px 2px 0 rgba(0,0,0,0.08);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .cont-icon {
-    width: 12px;
-    height: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .cont-icon .icon {
-    width: 0.7rem;
-    height: 0.7rem;
-  }
-  .cont-icon .sparkle {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    box-shadow: 0 0 2px 0.5px #fffbe6, 0 0 4px 1px #ffd70099;
-    opacity: 0.85;
-    z-index: 1;
-    position: absolute;
-  }
-  .orbit-orbs-container {
-    width: 100vw;
-    height: 100vh;
-    z-index: 2;
-  }
-  .orbit-orb {
-    width: 8px;
-    height: 8px;
-  }
-  .flight-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 30px;
-    z-index: 5;
-    pointer-events: none;
-  }
-  .airplane {
-    width: 28px;
-    height: 8px;
-    top: 8%;
-    left: -30px;
-    z-index: 6;
-  }
-  .flight-trail {
-    top: 10%;
-    height: 1px;
-  }
-  .train-container {
-    height: 16px;
-    bottom: 8%;
-    z-index: 5;
-  }
-  .train-track {
-    height: 2px;
-  }
-  .train {
-    bottom: 2px;
-  }
-  .train-carriage {
-    width: 10px;
-    height: 6px;
-    border-radius: 1px;
-  }
-  .train-window {
-    width: 1.5px;
-    height: 1.5px;
-    top: 1px;
-  }
-  .car-container {
-    height: 8px;
-    bottom: 12%;
-    z-index: 5;
-  }
-  .road {
-    height: 1.5px;
-  }
-  .car {
-    width: 12px;
-    height: 4px;
-    bottom: 1.5px;
-  }
-  .car-body {
-    width: 8px;
-    height: 2.5px;
-    left: 2px;
-    top: 0.7px;
-    border-radius: 1.2px;
-  }
-  .car-window {
-    width: 2px;
-    height: 1.2px;
-    top: 0.3px;
-  }
-  .car-window:nth-child(1) { left: 1.5px; }
-  .car-window:nth-child(2) { left: 4px; }
-  .car-wheel {
-    width: 1.5px;
-    height: 1.5px;
-    border-width: 0.5px;
-  }
-  .car-wheel-front {
-    left: 1.5px;
-  }
-  .car-wheel-back {
-    right: 1.5px;
-  }
-  .car-light {
-    width: 1px;
-    height: 1px;
-    top: 1px;
-  }
-  .car-light-front {
-    left: 0.5px;
-  }
-  .car-light-back {
-    right: 0.5px;
-  }
+/* Ensure tracks/roads are always visible, even on small screens */
+.train-track {
+  height: 8px !important;
+}
+.road {
+  height: 6px !important;
 }

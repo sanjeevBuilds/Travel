@@ -1,4 +1,4 @@
-git <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -58,6 +58,40 @@ git <!DOCTYPE html>
                     <div class="train-window"></div>
                 </div>
             </div>
+            <div class="train" id="train2" style="animation-delay: 2s;">
+                <div class="train-carriage">
+                    <div class="train-window"></div>
+                    <div class="train-window"></div>
+                    <div class="train-window"></div>
+                </div>
+                <div class="train-carriage">
+                    <div class="train-window"></div>
+                    <div class="train-window"></div>
+                    <div class="train-window"></div>
+                </div>
+                <div class="train-carriage">
+                    <div class="train-window"></div>
+                    <div class="train-window"></div>
+                    <div class="train-window"></div>
+                </div>
+            </div>
+            <div class="train" id="train3" style="animation-delay: 4s;">
+                <div class="train-carriage">
+                    <div class="train-window"></div>
+                    <div class="train-window"></div>
+                    <div class="train-window"></div>
+                </div>
+                <div class="train-carriage">
+                    <div class="train-window"></div>
+                    <div class="train-window"></div>
+                    <div class="train-window"></div>
+                </div>
+                <div class="train-carriage">
+                    <div class="train-window"></div>
+                    <div class="train-window"></div>
+                    <div class="train-window"></div>
+                </div>
+            </div>
         </div>
 
         <!-- Car Animation Container -->
@@ -65,29 +99,28 @@ git <!DOCTYPE html>
             <div class="road"></div>
             <div class="car" id="car">
                 <div class="car-body">
-                    <div class="car-window"></div>
-                    <div class="car-window"></div>
                 </div>
+                <div class="car-windshield"></div>
                 <div class="car-wheel car-wheel-front"></div>
                 <div class="car-wheel car-wheel-back"></div>
-                <div class="car-light car-light-front"></div>
-                <div class="car-light car-light-back"></div>
+            </div>
+            <div class="car" id="car2" style="animation-delay: 3s;">
+                <div class="car-body">
+                </div>
+                <div class="car-windshield"></div>
+                <div class="car-wheel car-wheel-front"></div>
+                <div class="car-wheel car-wheel-back"></div>
+            </div>
+            <div class="car" id="car3" style="animation-delay: 6s;">
+                <div class="car-body">
+                </div>
+                <div class="car-windshield"></div>
+                <div class="car-wheel car-wheel-front"></div>
+                <div class="car-wheel car-wheel-back"></div>
             </div>
         </div>
 
         <div class="frosted-card">
-            <div class="mini-scene">
-                <div class="mini-road"></div>
-                <div class="mini-portal" id="mini-portal"></div>
-                <div class="mini-car" id="mini-car">
-                    <div class="mini-car-body"></div>
-                    <div class="mini-car-window"></div>
-                    <div class="mini-car-wheel mini-car-wheel-front"></div>
-                    <div class="mini-car-wheel mini-car-wheel-back"></div>
-                    <div class="mini-car-light mini-car-light-front"></div>
-                    <div class="mini-car-light mini-car-light-back"></div>
-                </div>
-            </div>
             <h2 class="card-title">Choose Your Journey</h2>
             <div class="transport-options">
                 <div class="transport-option" data-transport="flight">
@@ -119,7 +152,7 @@ git <!DOCTYPE html>
                 <div class="transport-option" data-transport="car">
                     <div class="transport-icon">
                         <svg viewBox="0 0 24 24" class="icon-svg">
-                            <path d="M18.92,6.01C18.72,5.42 18.16,5 17.5,5H6.5C5.84,5 5.28,5.42 5.08,6.01L3,12V20A1,1 0 0,0 4,21H5A1,1 0 0,0 6,20V19H18V20A1,1 0 0,0 19,21H20A1,1 0 0,0 21,20V12L18.92,6.01M6.5,16A1.5,1.5 0 0,1 5,14.5A1.5,1.5 0 0,1 6.5,13A1.5,1.5 0 0,1 8,14.5A1.5,1.5 0 0,1 6.5,16M17.5,16A1.5,1.5 0 0,1 16,14.5A1.5,1.5 0 0,1 17.5,13A1.5,1.5 0 0,1 19,14.5A1.5,1.5 0 0,1 17.5,16M6.5,11L7.5,7H16.5L17.5,11H6.5Z"/>
+                            <path d="M18.92,5.01C18.72,4.42 18.16,4 17.5,4H6.5C5.84,4 5.28,4.42 5.08,5.01L3,11V20A1,1 0 0,0 4,21H5A1,1 0 0,0 6,20V19H18V20A1,1 0 0,0 19,21H20A1,1 0 0,0 21,20V11L18.92,5.01M6.5,15A1.5,1.5 0 0,1 5,13.5A1.5,1.5 0 0,1 6.5,12A1.5,1.5 0 0,1 8,13.5A1.5,1.5 0 0,1 6.5,15M17.5,15A1.5,1.5 0 0,1 16,13.5A1.5,1.5 0 0,1 17.5,12A1.5,1.5 0 0,1 19,13.5A1.5,1.5 0 0,1 17.5,15M6.5,10L7.5,6H16.5L17.5,10H6.5Z"/>
                         </svg>
                     </div>
                     <h3>Car</h3>
@@ -158,3 +191,4 @@ git <!DOCTYPE html>
     <script src="travel.js"></script>
 </body>
 </html>
+
