@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TransiGo - Winter Travel</title>
     <link rel="stylesheet" href="style.css">
+    <script src="../data/indian-cities.js"></script>
 </head>
 <body>
     <div class="toggle-cont" id="theme-toggle-cont">
@@ -24,11 +25,13 @@
         <canvas id="snow-canvas"></canvas>
         <div class="frosted-card">
             <div class="input-group">
-                <input type="text" id="source" class="snow-input" placeholder="Source" autocomplete="off">
+                <input type="text" id="source" class="snow-input" placeholder="Enter source city in India" autocomplete="off">
+                <div class="autocomplete-dropdown" id="source-dropdown"></div>
                 <canvas class="input-snow-canvas" id="input-snow-source"></canvas>
             </div>
             <div class="input-group">
-                <input type="text" id="destination" class="snow-input" placeholder="Destination" autocomplete="off">
+                <input type="text" id="destination" class="snow-input" placeholder="Enter destination city in India" autocomplete="off">
+                <div class="autocomplete-dropdown" id="destination-dropdown"></div>
                 <canvas class="input-snow-canvas" id="input-snow-destination"></canvas>
             </div>
             <div class="search-btn-container">
