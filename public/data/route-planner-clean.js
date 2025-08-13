@@ -107,12 +107,6 @@ class RoutePlanner {
             'Indore Airport': { lat: 22.7279, lng: 75.8011 },
             'Bhubaneswar Airport': { lat: 20.2544, lng: 85.8178 },
             'Coimbatore Airport': { lat: 11.0297, lng: 77.0436 },
-            'Ranchi Airport': { lat: 23.3143, lng: 85.3217 },
-            'Thiruvananthapuram Airport': { lat: 8.4821, lng: 76.9200 },
-            'Guwahati Airport': { lat: 26.1061, lng: 91.5859 },
-            'Patna Airport': { lat: 25.5913, lng: 85.0880 },
-            'Srinagar Airport': { lat: 34.0837, lng: 74.7747 },
-            'Jammu Airport': { lat: 32.6890, lng: 74.8378 },
 
             // Railway Stations
             'Mumbai Railway Station': { lat: 19.0144, lng: 72.8479 },
@@ -130,11 +124,6 @@ class RoutePlanner {
             'Bhubaneswar Railway Station': { lat: 20.2739, lng: 85.8181 },
             'Coimbatore Railway Station': { lat: 11.0015, lng: 76.9628 },
             'Thiruvananthapuram Railway Station': { lat: 8.5089, lng: 76.9553 },
-            'Ranchi Railway Station': { lat: 23.3441, lng: 85.3096 },
-            'Guwahati Railway Station': { lat: 26.1445, lng: 91.7362 },
-            'Patna Railway Station': { lat: 25.5941, lng: 85.1376 },
-            'Srinagar Railway Station': { lat: 34.0837, lng: 74.7973 },
-            'Jammu Railway Station': { lat: 32.7266, lng: 74.8570 },
 
             // Bus Terminals
             'Mumbai Bus Terminal': { lat: 19.0596, lng: 72.8295 },
@@ -151,12 +140,7 @@ class RoutePlanner {
             'Indore Bus Terminal': { lat: 22.6953, lng: 75.8567 },
             'Bhubaneswar Bus Terminal': { lat: 20.2700, lng: 85.8400 },
             'Coimbatore Bus Terminal': { lat: 10.9601, lng: 76.9702 },
-            'Thiruvananthapuram Bus Terminal': { lat: 8.4855, lng: 76.9492 },
-            'Ranchi Bus Terminal': { lat: 23.3600, lng: 85.3300 },
-            'Guwahati Bus Terminal': { lat: 26.1800, lng: 91.7500 },
-            'Patna Bus Terminal': { lat: 25.6200, lng: 85.1200 },
-            'Srinagar Bus Terminal': { lat: 34.1000, lng: 74.8000 },
-            'Jammu Bus Terminal': { lat: 32.7500, lng: 74.8700 }
+            'Thiruvananthapuram Bus Terminal': { lat: 8.4855, lng: 76.9492 }
         };
 
         // Cities with metro connectivity (intra-city only)
@@ -288,8 +272,7 @@ class RoutePlanner {
                 let totalDistance = 0;
                 
                 // For station-based transport modes, create multi-segment routes
-                // Note: Only flights and trains need stations, buses can go directly between cities
-                if (['flight', 'train'].includes(mode)) {
+                if (['flight', 'train', 'bus'].includes(mode)) {
                     const stationTypeMap = {
                         'flight': 'airport',
                         'train': 'railway', 
@@ -435,7 +418,7 @@ class RoutePlanner {
                     }
                     
                 } else {
-                    // Direct transport modes (car, auto, metro, bus)
+                    // Direct transport modes (car, auto, metro)
                     const time = distance / transport.speedKmh;
                     const cost = distance * transport.costPerKm;
                     
@@ -476,7 +459,7 @@ class RoutePlanner {
         
         // Strategy 1: Long distance main transport + local transport
         if (distance > 100) {
-            const mainModes = ['flight', 'train']; // Removed bus since it can go directly
+            const mainModes = ['flight', 'train', 'bus'];
             const localModes = ['car', 'auto'];
             
             mainModes.forEach(mainMode => {
@@ -490,7 +473,8 @@ class RoutePlanner {
                         
                         const stationTypeMap = {
                             'flight': 'airport',
-                            'train': 'railway'
+                            'train': 'railway',
+                            'bus': 'bus'
                         };
                         
                         const sourceStationName = this.getStationName(fromCity, mainMode);
@@ -574,39 +558,21 @@ class RoutePlanner {
         const allRoutes = validRoutes;
         const uniqueRoutes = this.filterUniqueRoutes(allRoutes);
         
-        // Ensure we have at least 3 different routes by generating fallbacks if needed
-        const diverseRoutes = this.ensureRouteDiversity(uniqueRoutes, fromCity, toCity, distance);
+        const timeRoutes = [...uniqueRoutes].sort((a, b) => a.totalTime - b.totalTime);
+        const costRoutes = [...uniqueRoutes].sort((a, b) => a.totalCost - b.totalCost);
         
-        const timeRoutes = [...diverseRoutes].sort((a, b) => a.totalTime - b.totalTime);
-        const costRoutes = [...diverseRoutes].sort((a, b) => a.totalCost - b.totalCost);
-        
-        const hybridRoutes = [...diverseRoutes].sort((a, b) => {
+        const hybridRoutes = [...uniqueRoutes].sort((a, b) => {
             const scoreA = (a.totalTime / 10) + (a.totalCost / 100) + (10 - a.comfortScore);
             const scoreB = (b.totalTime / 10) + (b.totalCost / 100) + (10 - b.comfortScore);
             return scoreA - scoreB;
         });
 
-        // Ensure we return different routes for each category
-        let fastestRoute = timeRoutes[0] || null;
-        let cheapestRoute = costRoutes[0] || null;
-        let hybridRoute = hybridRoutes[0] || null;
-        
-        // If routes are the same, try to find alternatives
-        if (fastestRoute && cheapestRoute && this.getRouteSignature(fastestRoute) === this.getRouteSignature(cheapestRoute)) {
-            cheapestRoute = costRoutes[1] || cheapestRoute;
-        }
-        
-        if (hybridRoute && (this.getRouteSignature(hybridRoute) === this.getRouteSignature(fastestRoute) || 
-                           this.getRouteSignature(hybridRoute) === this.getRouteSignature(cheapestRoute))) {
-            hybridRoute = hybridRoutes[1] || hybridRoutes[2] || hybridRoute;
-        }
-
         return {
             distance: Math.round(distance),
             routes: {
-                leastTime: fastestRoute,
-                leastCost: cheapestRoute,
-                hybrid: hybridRoute
+                leastTime: timeRoutes[0] || null,
+                leastCost: costRoutes[0] || null,
+                hybrid: hybridRoutes[0] || null
             }
         };
     }
@@ -720,110 +686,6 @@ class RoutePlanner {
         } else {
             const modes = route.segments.map(seg => seg.mode).join('-');
             return `multi-${modes}`;
-        }
-    }
-    
-    // Ensure we have diverse route options
-    ensureRouteDiversity(routes, fromCity, toCity, distance) {
-        if (routes.length >= 3) {
-            return routes;
-        }
-        
-        // Generate additional route variations if we don't have enough diversity
-        const additionalRoutes = [];
-        
-        // Try different local transport combinations for multi-modal routes
-        if (distance > 100) {
-            const mainModes = ['flight', 'train', 'bus'];
-            const localModes = ['car', 'auto'];
-            
-            mainModes.forEach(mainMode => {
-                if (this.isTransportAvailable(mainMode, distance - 50, fromCity, toCity)) {
-                    localModes.forEach(localMode => {
-                        const signature = `multi-${localMode}-${mainMode}-${localMode}`;
-                        const exists = routes.some(r => this.getRouteSignature(r) === signature);
-                        
-                        if (!exists && additionalRoutes.length < 3) {
-                            // Create a variation with different local transport
-                            const route = this.createVariationRoute(fromCity, toCity, mainMode, localMode, distance);
-                            if (route) {
-                                additionalRoutes.push(route);
-                            }
-                        }
-                    });
-                }
-            });
-        }
-        
-        return [...routes, ...additionalRoutes];
-    }
-    
-    // Create a route variation with specific transport modes
-    createVariationRoute(fromCity, toCity, mainMode, localMode, distance) {
-        try {
-            const mainTransport = this.transportModes[mainMode];
-            const localTransport = this.transportModes[localMode];
-            
-            if (!mainTransport || !localTransport) return null;
-            
-            const sourceStationName = this.getStationName(fromCity, mainMode);
-            const destStationName = this.getStationName(toCity, mainMode);
-            
-            const sourceStationDist = this.calculateDistance(fromCity, sourceStationName);
-            const destStationDist = this.calculateDistance(destStationName, toCity);
-            const mainDistance = this.calculateDistance(sourceStationName, destStationName);
-            
-            if (sourceStationDist <= 0 || destStationDist <= 0 || mainDistance <= 0) {
-                return null;
-            }
-            
-            const segments = [
-                {
-                    from: fromCity,
-                    to: sourceStationName,
-                    mode: localMode,
-                    distance: Math.round(sourceStationDist),
-                    time: Math.round((sourceStationDist / localTransport.speedKmh) * 10) / 10,
-                    cost: Math.round(sourceStationDist * localTransport.costPerKm),
-                    transport: localTransport
-                },
-                {
-                    from: sourceStationName,
-                    to: destStationName,
-                    mode: mainMode,
-                    distance: Math.round(mainDistance),
-                    time: Math.round((mainDistance / mainTransport.speedKmh) * 10) / 10,
-                    cost: Math.round(mainDistance * mainTransport.costPerKm),
-                    transport: mainTransport
-                },
-                {
-                    from: destStationName,
-                    to: toCity,
-                    mode: localMode,
-                    distance: Math.round(destStationDist),
-                    time: Math.round((destStationDist / localTransport.speedKmh) * 10) / 10,
-                    cost: Math.round(destStationDist * localTransport.costPerKm),
-                    transport: localTransport
-                }
-            ];
-            
-            const totalTime = segments.reduce((sum, seg) => sum + seg.time, 0) + 0.5;
-            const totalCost = segments.reduce((sum, seg) => sum + seg.cost, 0);
-            const avgComfort = (mainTransport.comfortLevel + localTransport.comfortLevel) / 2;
-            const avgReliability = (mainTransport.reliability + localTransport.reliability) / 2;
-            
-            return {
-                type: 'multi-modal',
-                segments: segments,
-                totalTime: totalTime,
-                totalCost: totalCost,
-                totalDistance: distance,
-                comfortScore: avgComfort,
-                reliabilityScore: avgReliability
-            };
-        } catch (error) {
-            console.warn('Error creating variation route:', error);
-            return null;
         }
     }
 }
