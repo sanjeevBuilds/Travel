@@ -186,10 +186,123 @@ themeToggle.addEventListener('change', () => {
     }
 });
 
-// Search functionality
-const searchBtn = document.getElementById('search-btn');
+// Autocomplete functionality
+class AutoComplete {
+    constructor(inputElement, dropdownElement) {
+        this.input = inputElement;
+        this.dropdown = dropdownElement;
+        this.selectedIndex = -1;
+        this.filteredCities = [];
+        
+        this.setupEventListeners();
+    }
+    
+    setupEventListeners() {
+        this.input.addEventListener('input', (e) => this.handleInput(e));
+        this.input.addEventListener('keydown', (e) => this.handleKeydown(e));
+        this.input.addEventListener('blur', (e) => this.handleBlur(e));
+        this.dropdown.addEventListener('mousedown', (e) => e.preventDefault()); // Prevent blur
+    }
+    
+    handleInput(e) {
+        const query = e.target.value.trim();
+        
+        if (query.length < 2) {
+            this.hideDropdown();
+            return;
+        }
+        
+        this.filteredCities = searchCities(query);
+        this.showDropdown();
+        this.selectedIndex = -1;
+    }
+    
+    handleKeydown(e) {
+        if (!this.dropdown.classList.contains('show')) return;
+        
+        switch(e.key) {
+            case 'ArrowDown':
+                e.preventDefault();
+                this.selectedIndex = Math.min(this.selectedIndex + 1, this.filteredCities.length - 1);
+                this.updateHighlight();
+                break;
+            case 'ArrowUp':
+                e.preventDefault();
+                this.selectedIndex = Math.max(this.selectedIndex - 1, -1);
+                this.updateHighlight();
+                break;
+            case 'Enter':
+                e.preventDefault();
+                if (this.selectedIndex >= 0) {
+                    this.selectCity(this.filteredCities[this.selectedIndex]);
+                }
+                break;
+            case 'Escape':
+                this.hideDropdown();
+                break;
+        }
+    }
+    
+    handleBlur(e) {
+        // Delay hiding to allow click on dropdown items
+        setTimeout(() => this.hideDropdown(), 150);
+    }
+    
+    showDropdown() {
+        if (this.filteredCities.length === 0) {
+            this.hideDropdown();
+            return;
+        }
+        
+        this.dropdown.innerHTML = '';
+        
+        this.filteredCities.forEach((city, index) => {
+            const item = document.createElement('div');
+            item.className = 'autocomplete-item';
+            item.innerHTML = `
+                <span class="city-name">${city.name}</span>
+                <span class="city-state">${city.state}</span>
+            `;
+            
+            item.addEventListener('click', () => this.selectCity(city));
+            this.dropdown.appendChild(item);
+        });
+        
+        this.dropdown.classList.add('show');
+    }
+    
+    hideDropdown() {
+        this.dropdown.classList.remove('show');
+        this.selectedIndex = -1;
+    }
+    
+    updateHighlight() {
+        const items = this.dropdown.querySelectorAll('.autocomplete-item');
+        items.forEach((item, index) => {
+            item.classList.toggle('highlighted', index === this.selectedIndex);
+        });
+    }
+    
+    selectCity(city) {
+        this.input.value = city.name;
+        this.hideDropdown();
+        
+        // Trigger input event to update any dependent functionality
+        this.input.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+}
+
+// Initialize autocomplete for both inputs
 const sourceInput = document.getElementById('source');
 const destinationInput = document.getElementById('destination');
+const sourceDropdown = document.getElementById('source-dropdown');
+const destinationDropdown = document.getElementById('destination-dropdown');
+
+const sourceAutocomplete = new AutoComplete(sourceInput, sourceDropdown);
+const destinationAutocomplete = new AutoComplete(destinationInput, destinationDropdown);
+
+// Search functionality
+const searchBtn = document.getElementById('search-btn');
 
 searchBtn.addEventListener('click', () => {
     const source = sourceInput.value.trim();

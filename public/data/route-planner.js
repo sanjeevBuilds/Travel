@@ -398,6 +398,36 @@ class RoutePlanner {
     formatCost(cost) {
         return `₹${Math.round(cost)}`;
     }
+
+    // Get route optimization results
+    getOptimizedRoutes(fromCity, toCity) {
+        const routeData = this.planRoute(fromCity, toCity);
+        
+        return {
+            distance: routeData.distance,
+            fastest: {
+                ...routeData.routes.leastTime,
+                title: "Fastest Route",
+                icon: "⚡",
+                description: "Get there in minimum time",
+                highlight: "time"
+            },
+            cheapest: {
+                ...routeData.routes.leastCost,
+                title: "Cheapest Route", 
+                icon: "💰",
+                description: "Most economical option",
+                highlight: "cost"
+            },
+            hybrid: {
+                ...routeData.routes.hybrid,
+                title: "Balanced Route",
+                icon: "⚖️", 
+                description: "Best balance of time, cost & comfort",
+                highlight: "balance"
+            }
+        };
+    }
 }
 
 // Export for use in other files
