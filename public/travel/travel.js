@@ -117,87 +117,163 @@ function generateRouteOptions(source, destination) {
         // Clear loading and display routes
         routeOptionsContainer.innerHTML = '';
         
-        // Create route cards
-        const routeTypes = ['fastest', 'cheapest', 'hybrid'];
-        routeTypes.forEach(type => {
-            const route = optimizedRoutes[type];
-            if (route) {
-                const routeCard = createRouteCard(route, type);
-                routeOptionsContainer.appendChild(routeCard);
-            }
-        });
+        // Create route buttons
+        const fastestButton = createRouteButton(optimizedRoutes.fastest, 'fastest');
+        const cheapestButton = createRouteButton(optimizedRoutes.cheapest, 'cheapest');
+        const hybridButton = createRouteButton(optimizedRoutes.hybrid, 'hybrid');
+        
+        routeOptionsContainer.appendChild(fastestButton);
+        routeOptionsContainer.appendChild(cheapestButton);
+        routeOptionsContainer.appendChild(hybridButton);
     }, 1000);
 }
 
-// Create route card element
-function createRouteCard(route, type) {
-    const card = document.createElement('div');
-    card.className = `route-card ${type}`;
-    card.setAttribute('data-route-type', type);
+// Create route button element
+function createRouteButton(route, type) {
+    const button = document.createElement('button');
+    button.className = `route-button ${type}`;
     
-    const isMultiModal = route.type === 'multi-modal';
-    const segments = route.segments || [route];
-    
-    card.innerHTML = `
-        <div class="route-header">
+    button.innerHTML = `
+        <div class="route-button-content">
             <div class="route-icon">${route.icon}</div>
             <div class="route-info">
                 <h3 class="route-title">${route.title}</h3>
-                <p class="route-description">${route.description}</p>
+                <div class="route-quick-stats">
+                    <span class="quick-stat time ${route.highlight === 'time' ? 'highlighted' : ''}">
+                        ⏱️ ${routePlanner.formatTime(route.totalTime)}
+                    </span>
+                    <span class="quick-stat cost ${route.highlight === 'cost' ? 'highlighted' : ''}">
+                        💰 ${routePlanner.formatCost(route.totalCost)}
+                    </span>
+                </div>
             </div>
-            <div class="route-stats">
+            <div class="route-arrow">→</div>
+        </div>
+    `;
+    
+    // Add click handler to open modal
+    button.addEventListener('click', () => {
+        openRouteModal(route, type);
+    });
+    
+    return button;
+}
+
+// Create and show route modal
+function openRouteModal(route, type) {
+    const modal = document.createElement('div');
+    modal.className = 'route-modal';
+    modal.id = 'route-modal';
+    
+    const isMultiModal = route.type === 'multi-modal';
+    const segments = route.segments || [];
+    
+    modal.innerHTML = `
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="route-icon">${route.icon}</div>
+                <div class="route-info">
+                    <h3 class="route-title">${route.title}</h3>
+                    <p class="route-description">${route.description}</p>
+                </div>
+                <button class="modal-close">×</button>
+            </div>
+            
+            <div class="modal-stats">
                 <div class="stat time-stat ${route.highlight === 'time' ? 'highlighted' : ''}">
                     <span class="stat-icon">⏱️</span>
+                    <span class="stat-label">Time</span>
                     <span class="stat-value">${routePlanner.formatTime(route.totalTime)}</span>
                 </div>
                 <div class="stat cost-stat ${route.highlight === 'cost' ? 'highlighted' : ''}">
                     <span class="stat-icon">💰</span>
+                    <span class="stat-label">Cost</span>
                     <span class="stat-value">${routePlanner.formatCost(route.totalCost)}</span>
                 </div>
-            </div>
-        </div>
-        ${isMultiModal ? `
-            <div class="route-segments">
-                <div class="segments-header">
-                    <span class="segments-title">Journey Steps:</span>
-                    <button class="view-path-btn" data-route-type="${type}">View Path</button>
+                <div class="stat distance-stat">
+                    <span class="stat-icon">📏</span>
+                    <span class="stat-label">Distance</span>
+                    <span class="stat-value">${Math.round(route.totalDistance)} km</span>
                 </div>
-                <div class="segments-list">
-                    ${segments.map((segment, index) => `
-                        <div class="segment">
-                            <div class="segment-icon">${segment.transport.icon}</div>
-                            <div class="segment-details">
-                                <div class="segment-route">${segment.from} → ${segment.to}</div>
-                                <div class="segment-mode">${segment.transport.name}</div>
+            </div>
+            
+            ${isMultiModal ? `
+                <div class="modal-segments">
+                    <h4 class="segments-title">Journey Steps:</h4>
+                    <div class="segments-list">
+                        ${segments.map((segment, index) => `
+                            <div class="segment">
+                                <div class="segment-icon">${segment.transport.icon}</div>
+                                <div class="segment-details">
+                                    <div class="segment-route">${segment.from} → ${segment.to}</div>
+                                    <div class="segment-mode">${segment.transport.name}</div>
+                                    <div class="segment-distance">${Math.round(segment.distance)} km</div>
+                                </div>
+                                <div class="segment-stats">
+                                    <span class="segment-time">⏱️ ${routePlanner.formatTime(segment.time)}</span>
+                                    <span class="segment-cost">💰 ${routePlanner.formatCost(segment.cost)}</span>
+                                </div>
                             </div>
-                            <div class="segment-stats">
-                                <span class="segment-time">${routePlanner.formatTime(segment.time)}</span>
-                                <span class="segment-cost">${routePlanner.formatCost(segment.cost)}</span>
-                            </div>
+                            ${index < segments.length - 1 ? '<div class="segment-connector">↓</div>' : ''}
+                        `).join('')}
+                    </div>
+                </div>
+            ` : `
+                <div class="modal-single-mode">
+                    <div class="single-mode-info">
+                        <div class="transport-icon">${segments[0].transport.icon}</div>
+                        <div class="transport-details">
+                            <div class="transport-name">${segments[0].transport.name}</div>
+                            <div class="transport-distance">${Math.round(segments[0].distance)} km direct route</div>
+                            <div class="transport-comfort">Comfort Level: ${segments[0].transport.comfortLevel}/10</div>
                         </div>
-                        ${index < segments.length - 1 ? '<div class="segment-connector">↓</div>' : ''}
-                    `).join('')}
+                    </div>
                 </div>
-            </div>
-        ` : `
-            <div class="route-single-mode">
-                <div class="single-mode-info">
-                    <span class="transport-icon">${segments[0].transport.icon}</span>
-                    <span class="transport-name">${segments[0].transport.name}</span>
-                    <span class="transport-distance">${Math.round(segments[0].distance)} km</span>
-                </div>
-            </div>
-        `}
+            `}
+            
+
+        </div>
     `;
     
-    // Add click handler for route selection
-    card.addEventListener('click', (e) => {
-        if (!e.target.classList.contains('view-path-btn')) {
-            selectRoute(card, route, type);
-        }
-    });
+    document.body.appendChild(modal);
     
-    // Add view path button handler
+    // Add event listeners
+    const overlay = modal.querySelector('.modal-overlay');
+    const closeBtn = modal.querySelector('.modal-close');
+
+    
+    // Close modal handlers
+    overlay.addEventListener('click', closeRouteModal);
+    closeBtn.addEventListener('click', closeRouteModal);
+    
+
+    
+    // Show modal with animation
+    setTimeout(() => modal.classList.add('show'), 10);
+}
+
+// Close route modal
+function closeRouteModal() {
+    const modal = document.getElementById('route-modal');
+    if (modal) {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            if (modal.parentNode) {
+                modal.parentNode.removeChild(modal);
+            }
+        }, 300);
+    }
+}
+
+// Legacy function for compatibility (no longer used)
+function createRouteCard(route, type) {
+    // This function is kept for compatibility but replaced by createRouteButton
+    return createRouteButton(route, type);
+}
+
+// Legacy view path handler (keeping for compatibility)
+function addViewPathHandler(card, route, type) {
     const viewPathBtn = card.querySelector('.view-path-btn');
     if (viewPathBtn) {
         viewPathBtn.addEventListener('click', (e) => {

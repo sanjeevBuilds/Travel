@@ -207,7 +207,7 @@ class AutoComplete {
     handleInput(e) {
         const query = e.target.value.trim();
         
-        if (query.length < 2) {
+        if (query.length < 1) {
             this.hideDropdown();
             return;
         }
